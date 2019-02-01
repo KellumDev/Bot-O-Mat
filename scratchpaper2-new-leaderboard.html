@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+
+    <script>
+        var leaderboard_performance = {
+            render_leader_board: function(input) {
+                var table_middle = "";
+                var target_element = '#bot-table';
+              
+                input.forEach(function(level_1) {
+
+                    table_middle = '<tr><td>' + level_1.sn_andriod_name + '</td><td>' + level_1.sn_andriod_type + '</td><td>' + level_1.sn_tasks_completed + '</td></tr>';
+                    //     $(target_element).append(one_row);
+                    $('#one-row').append(table_middle);
+
+                });
+                table_middle = "";
+            },
+
+            access_skynet_api: function() {
+
+                    $.ajax({
+                        type: "GET",
+                        contentType: "application/json",
+                        url: "http://skynetbots.website/skynet/top-performers",
+                        dataType: 'json',
+                        success: function(data) {
+
+                            leaderboard_performance.render_leader_board(data);
+                        },
+                        error: function(e) {
+                            // error_occured();
+                            console.log("ERROR: ", e);
+                        }
+                    });
+
+                } // end leaderboard_performance
+        }
+
+        main_leaderboard_method();
+
+
+        function main_leaderboard_method() {
+
+
+            //persistantly check database every 20 seconds
+            //   setInterval(function() {
+
+            leaderboard_performance.access_skynet_api();
+            //    }, 5000);
+
+
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Bot Name</th>
+                        <th>Bot type </th>
+                        <th>Tasks Completed</th>
+                    </tr>
+                </thead>
+                <tbody id="one-row">
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-6" style="background: red">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Bot Name</th>
+                        <th>Bot type </th>
+                        <th>Tasks Completed</th>
+                    </tr>
+                </thead>
+                <tbody id="one-row">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
