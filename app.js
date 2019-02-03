@@ -5,21 +5,13 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const sk_util = require("./api/routes/skynet");
-
-/* 
-mongoose.connect(
-    "mongodb://admin:nextel12@ds125293.mlab.com:25293/rx_drugbank_data", {
-        useMongoClient: true
-    }
-);
-*/
-
-
+ 
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//establish all headers to handle POST and GET verbs 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
@@ -29,7 +21,6 @@ app.use((req, res, next) => {
     if (req.method === "POST") {
         res.header("Access-Control-Allow-Methods", "POST");
         res.status(200);
-        //.json(response);
     }
     if (req.method === "GET") {
         res.header("Access-Control-Allow-Methods", "GET");
@@ -39,12 +30,11 @@ app.use((req, res, next) => {
             "Access-Control-Allow-Headers",
             "Origin, X-Requested-With, Content-Type, Accept, Authorization"
         );
-        //.json(response);
     }
     next();
 });
 
-
+// sky net routes 
 app.use("/skynet", sk_util);
 
 app.use((req, res, next) => {
